@@ -71,9 +71,15 @@ def get_user_tweets(twitter_handle):
 		f.close()
 	tweet_list = []
 	for i in range(len(twitter_results)):
+		tweet_id = twitter_results[i]["id"] #could also be "id_str"
+		author = twitter_results[i]["user"]["name"]
+		time_posted = twitter_results[i]["created_at"]
 		tweet_text = twitter_results[i]["text"]
-		tweet_list.append(tweet_text)
+		retweets = twitter_results[i]["retweet_count"]
+		tweet_list.append((tweet_id, author, time_posted, tweet_text, retweets))
 	return(tweet_list)
+for avalue in get_user_tweets("Lin_Manuel"):
+	print(avalue)
 
 
 # Write code to create/build a connection to a database: tweets.db,
