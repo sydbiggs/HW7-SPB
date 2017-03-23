@@ -78,8 +78,9 @@ def get_user_tweets(twitter_handle):
 		retweets = twitter_results[i]["retweet_count"]
 		tweet_list.append((tweet_id, author, time_posted, tweet_text, retweets))
 	return(tweet_list)
-for avalue in get_user_tweets("Lin_Manuel"):
-	print(avalue)
+
+# for avalue in get_user_tweets("Lin_Manuel"):
+# 	print(avalue)
 
 
 # Write code to create/build a connection to a database: tweets.db,
@@ -94,26 +95,36 @@ for avalue in get_user_tweets("Lin_Manuel"):
 # Below we have provided interim outline suggestions for what to do, sequentially, in comments.
 
 # Make a connection to a new database tweets.db, and create a variable to hold the database cursor.
+conn = sqlite3.connect('tweets.db')
+cur = conn.cursor()
 
-
-# Write code to drop the Tweets table if it exists, and create the table (so you can run the program over and over), with the correct (4) column names and appropriate types for each.
+# Write code to drop the Tweets table if it exists, and create the table (so you can run the program over and over), 
+# with the correct (4) column names and appropriate types for each.
 # HINT: Remember that the time_posted column should be the TIMESTAMP data type!
+cur.execute('DROP TABLE IF EXISTS tweets')
+
+table_spec = 'CREATE TABLE IF NOT EXISTS '
+# table_spec += 'Tweets (id INTEGER PRIMARY KEY, '
+# table_spec += 'tweet_id INTEGER, author TEXT, time_posted TIMESTAMP, tweet_text TEXT, retweets INTEGER)'
+table_spec += 'Tweets (tweet_id INTEGER PRIMARY KEY, '
+table_spec += 'author TEXT, time_posted TIMESTAMP, tweet_text TEXT, retweets INTEGER)'
+cur.execute(table_spec)
 
 
 # Invoke the function you defined above to get a list that represents a bunch of tweets from the UMSI timeline. Save those tweets in a variable called umsi_tweets.
+umsi_tweets = get_user_tweets("UMSI")
 
-
-
-
-# Use a for loop, the cursor you defined above to execute INSERT statements, that insert the data from each of the tweets in umsi_tweets into the correct columns in each row of the Tweets database table.
+# Use a for loop, the cursor you defined above to execute INSERT statements, that insert the data from each of the
+# tweets in umsi_tweets into the correct columns in each row of the Tweets database table.
 
 # (You should do nested data investigation on the umsi_tweets value to figure out how to pull out the data correctly!)
 
-
-
+statement = 'INSERT INTO Tweets VALUES (?, ?, ?, ?, ?)'
+for avalue in umsi_tweets:
+	cur.execute(statement,avalue)
 
 # Use the database connection to commit the changes to the database
-
+conn.commit()
 
 
 # You can check out whether it worked in the SQLite browser! (And with the tests.)
