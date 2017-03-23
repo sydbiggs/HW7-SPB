@@ -69,15 +69,16 @@ def get_user_tweets(twitter_handle):
 		f = open(CACHE_FNAME, "w")
 		f.write(json.dumps(CACHE_DICTION))
 		f.close()
-	tweet_list = []
-	for i in range(len(twitter_results)):
-		tweet_id = twitter_results[i]["id"] #could also be "id_str"
-		author = twitter_results[i]["user"]["name"]
-		time_posted = twitter_results[i]["created_at"]
-		tweet_text = twitter_results[i]["text"]
-		retweets = twitter_results[i]["retweet_count"]
-		tweet_list.append((tweet_id, author, time_posted, tweet_text, retweets))
-	return(tweet_list)
+	return(twitter_results)
+	# tweet_list = []
+	# for i in range(len(twitter_results)):
+	# 	tweet_id = twitter_results[i]["id"] #could also be "id_str"
+	# 	author = twitter_results[i]["user"]["name"]
+	# 	time_posted = twitter_results[i]["created_at"]
+	# 	tweet_text = twitter_results[i]["text"]
+	# 	retweets = twitter_results[i]["retweet_count"]
+	# 	tweet_list.append((tweet_id, author, time_posted, tweet_text, retweets))
+	# return(tweet_list)
 
 # for avalue in get_user_tweets("Lin_Manuel"):
 # 	print(avalue)
@@ -112,7 +113,17 @@ cur.execute(table_spec)
 
 
 # Invoke the function you defined above to get a list that represents a bunch of tweets from the UMSI timeline. Save those tweets in a variable called umsi_tweets.
-umsi_tweets = get_user_tweets("UMSI")
+tweet_list = []
+twitter_results = (get_user_tweets("UMSI"))
+for i in range(len(twitter_results)):
+	tweet_id = twitter_results[i]["id"] #could also be "id_str"
+	author = twitter_results[i]["user"]["name"]
+	time_posted = twitter_results[i]["created_at"]
+	tweet_text = twitter_results[i]["text"]
+	retweets = twitter_results[i]["retweet_count"]
+	tweet_list.append((tweet_id, author, time_posted, tweet_text, retweets))
+umsi_tweets = tweet_list
+print(umsi_tweets[6])
 
 # Use a for loop, the cursor you defined above to execute INSERT statements, that insert the data from each of the
 # tweets in umsi_tweets into the correct columns in each row of the Tweets database table.
