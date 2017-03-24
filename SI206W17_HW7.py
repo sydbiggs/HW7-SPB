@@ -179,14 +179,13 @@ for avalue in cur:
 #Note that first_rt should contain a single string value, not a tuple.
 query = "SELECT tweet_text FROM Tweets WHERE instr(tweet_text, 'RT')";
 cur.execute(query)
-first_rt = []
+first_rt_list = []
 for avalue in cur:
 	if avalue[:2] == "RT":
-		first_rt.append(avalue)
+		first_rt_list.append(avalue)
 	else:
-		first_rt.append(None)
-first_rt = first_rt[0]
-
+		first_rt_list.append("")
+first_rt = first_rt_list[0]
 
 # Finally, done with database stuff for a bit: write a line of code to close the cursor to the database.
 conn.close()
