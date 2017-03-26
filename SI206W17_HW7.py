@@ -71,20 +71,6 @@ def get_user_tweets(twitter_handle):
 		f.close()
 	return(twitter_results)
 
-	# tweet_list = []
-	# for i in range(len(twitter_results)):
-	# 	tweet_id = twitter_results[i]["id"] #could also be "id_str"
-	# 	author = twitter_results[i]["user"]["name"]
-	# 	time_posted = twitter_results[i]["created_at"]
-	# 	tweet_text = twitter_results[i]["text"]
-	# 	retweets = twitter_results[i]["retweet_count"]
-	# 	tweet_list.append((tweet_id, author, time_posted, tweet_text, retweets))
-	# return(tweet_list)
-
-# for avalue in get_user_tweets("Lin_Manuel"):
-# 	print(avalue)
-
-
 # Write code to create/build a connection to a database: tweets.db,
 # And then load all of those tweets you got from Twitter into a database table called Tweets, with the following columns in each row:
 
@@ -157,14 +143,6 @@ tweet_posted_times = []
 for avalue in cur:
 	tweet_posted_times.append(avalue)
 
-		# example
-# query = "SELECT * FROM Tracks INNER JOIN Artists ON Tracks.artist=Artists.id"
-# print("\nFollowing, all the Tracks and Artists joined in the database:\n")
-# cur.execute(query)
-# for row in cur:
-# 	print(row)
-		# end example 
-
 # Select all of the tweets (the full rows/tuples of information) that have been retweeted MORE than 2 times, 
 # and fetch them into the variable more_than_2_rts.
 query = "SELECT * FROM Tweets WHERE retweets > 2";
@@ -172,7 +150,6 @@ cur.execute(query)
 more_than_2_rts = []
 for avalue in cur:
 	more_than_2_rts.append(avalue)
-
 
 # Select all of the TEXT values of the tweets that are retweets of another account 
 #(i.e. have "RT" at the beginning of the tweet text). Save the FIRST ONE from that group of text values in the variable first_rt. 
@@ -184,7 +161,6 @@ first_rt_list = []
 for avalue in cur:
 	if avalue[:2] == "RT":
 		first_rt_list.append(avalue)
-
 if len(first_rt_list) != 0:
 	first_rt = first_rt_list[0]
 else:
@@ -198,24 +174,6 @@ conn.close()
 
 # Define a function get_twitter_users that accepts a string as in put and returns a SET of the _twitter screennames_ of each 
 # twitter user who was mentioned in that string. 
-# def get_twitter_users(astring):
-# 	my_string = astring.split()
-# 	list_a = {".", "!", ","}
-# 	for avalue in my_string:
-# 		for apunct in list_a:
-# 	user_set = {avalue[1:] for avalue in my_string if avalue[0] == "@"}
-# 	return(user_set)
-def get_twitter_users(astring):
-	final_list =[]
-	regrex = r"@[A-z_0-9]+"
-	# regex = r"\bhttps?://\w+\.[A-z]{2,}[^\s]+\b"
-	handles = re.findall(regrex, astring)
-
-	# for avalue in handles:
-	# 	final_list.append(avalue[1:])
-	final_set = {avalue[1:] for avalue in handles}
-	return(final_set)
-print(get_twitter_users("hey @umich, @aadl is pretty great, huh? @student1 @student2"))
 
 # Note that the syntax for mentions in a tweet is that the username is preceded by an "@" character, e.g. "@umsi" or "@aadl", 
 # and cannot contain any punctuation besides underscores -- that's how to determine what user names are mentioned. 
@@ -227,7 +185,7 @@ print(get_twitter_users("hey @umich, @aadl is pretty great, huh? @student1 @stud
 # You may assume for this problem that there will be no usernames directly in order, e.g. "@hello@goodbye", only "@hello and @goodbye" for example. 
 # We will iterate on this later!
 
-# Also note that the SET type is what this function should return, NOT a list or tuple. s
+# Also note that the SET type is what this function should return, NOT a list or tuple.
 # We looked at very briefly at sets when we looked at set comprehensions last week. 
 # In a Python 3 set, which is a special data type, it's a lot like a combination of a list and a 
 # dictionary: no key-value pairs, BUT each element in a set is by definition unique. You can't have duplicates.
@@ -235,9 +193,12 @@ print(get_twitter_users("hey @umich, @aadl is pretty great, huh? @student1 @stud
 # If you want to challenge yourself here -- this function definition (what goes under the def statement) 
 # CAN be written in one line! Definitely, definitely fine to write it with multiple lines, too, which will be much easier and clearer.
 
-
-
-
+def get_twitter_users(astring):
+	final_list =[]
+	regrex = r"@[A-z_0-9]+"
+	handles = re.findall(regrex, astring)
+	final_set = {avalue[1:] for avalue in handles}
+	return(final_set)
 
 #########
 print("*** OUTPUT OF TESTS BELOW THIS LINE ***")
