@@ -198,20 +198,42 @@ conn.close()
 
 # Define a function get_twitter_users that accepts a string as in put and returns a SET of the _twitter screennames_ of each 
 # twitter user who was mentioned in that string. 
+# def get_twitter_users(astring):
+# 	my_string = astring.split()
+# 	list_a = {".", "!", ","}
+# 	for avalue in my_string:
+# 		for apunct in list_a:
+# 	user_set = {avalue[1:] for avalue in my_string if avalue[0] == "@"}
+# 	return(user_set)
 def get_twitter_users(astring):
-	my_string = astring.split()
-	user_set = {avalue[1:] for avalue in my_string if avalue[0] == "@"}
-	return(user_set)
+	final_list =[]
+	regrex = r"@[A-z_0-9]+"
+	# regex = r"\bhttps?://\w+\.[A-z]{2,}[^\s]+\b"
+	handles = re.findall(regrex, astring)
 
-# Note that the syntax for mentions in a tweet is that the username is preceded by an "@" character, e.g. "@umsi" or "@aadl", and cannot contain any punctuation besides underscores -- that's how to determine what user names are mentioned. (e.g. @hello? is just the username "hello", but @programmer_at_umsi is "programmer_at_umsi"). 
+	# for avalue in handles:
+	# 	final_list.append(avalue[1:])
+	final_set = {avalue[1:] for avalue in handles}
+	return(final_set)
+print(get_twitter_users("hey @umich, @aadl is pretty great, huh? @student1 @student2"))
 
-#re.match and getting the 0th group from the MatchObject may be useful for you here... reminder: http://stackoverflow.com/questions/15340582/python-extract-pattern-matches
+# Note that the syntax for mentions in a tweet is that the username is preceded by an "@" character, e.g. "@umsi" or "@aadl", 
+# and cannot contain any punctuation besides underscores -- that's how to determine what user names are mentioned. 
+#(e.g. @hello? is just the username "hello", but @programmer_at_umsi is "programmer_at_umsi"). 
 
-# You may assume for this problem that there will be no usernames directly in order, e.g. "@hello@goodbye", only "@hello and @goodbye" for example. We will iterate on this later!
+#re.match and getting the 0th group from the MatchObject may be useful for you here... 
+# reminder: http://stackoverflow.com/questions/15340582/python-extract-pattern-matches
 
-# Also note that the SET type is what this function should return, NOT a list or tuple. We looked at very briefly at sets when we looked at set comprehensions last week. In a Python 3 set, which is a special data type, it's a lot like a combination of a list and a dictionary: no key-value pairs, BUT each element in a set is by definition unique. You can't have duplicates.
+# You may assume for this problem that there will be no usernames directly in order, e.g. "@hello@goodbye", only "@hello and @goodbye" for example. 
+# We will iterate on this later!
 
-# If you want to challenge yourself here -- this function definition (what goes under the def statement) CAN be written in one line! Definitely, definitely fine to write it with multiple lines, too, which will be much easier and clearer.
+# Also note that the SET type is what this function should return, NOT a list or tuple. s
+# We looked at very briefly at sets when we looked at set comprehensions last week. 
+# In a Python 3 set, which is a special data type, it's a lot like a combination of a list and a 
+# dictionary: no key-value pairs, BUT each element in a set is by definition unique. You can't have duplicates.
+
+# If you want to challenge yourself here -- this function definition (what goes under the def statement) 
+# CAN be written in one line! Definitely, definitely fine to write it with multiple lines, too, which will be much easier and clearer.
 
 
 
@@ -220,38 +242,38 @@ def get_twitter_users(astring):
 #########
 print("*** OUTPUT OF TESTS BELOW THIS LINE ***")
 
-# class PartOne(unittest.TestCase):
-# 	def test1(self):
-# 		self.assertEqual(type(umsi_tweets),type([]))
-# 	def test2(self):
-# 		self.assertEqual(type(get_user_tweets("umich")[1]),type({"hi":"bye"}))
-# 	def test3(self):
-# 		fpt = open("206W17_HW7_cache.json","r")
-# 		fpt_str = fpt.read()
-# 		fpt.close()
-# 		obj = json.loads(fpt_str)
-# 		self.assertEqual(type(obj),type({"hi":"bye"}))
-# 	def test4(self):
-# 		self.assertTrue("text" in umsi_tweets[6])
-# 		self.assertTrue("user" in umsi_tweets[4])
+class PartOne(unittest.TestCase):
+	def test1(self):
+		self.assertEqual(type(umsi_tweets),type([]))
+	def test2(self):
+		self.assertEqual(type(get_user_tweets("umich")[1]),type({"hi":"bye"}))
+	def test3(self):
+		fpt = open("206W17_HW7_cache.json","r")
+		fpt_str = fpt.read()
+		fpt.close()
+		obj = json.loads(fpt_str)
+		self.assertEqual(type(obj),type({"hi":"bye"}))
+	def test4(self):
+		self.assertTrue("text" in umsi_tweets[6])
+		self.assertTrue("user" in umsi_tweets[4])
 
-# class PartTwo(unittest.TestCase):
-# 	def test1(self):
-# 		self.assertEqual(type(tweet_posted_times),type([]))
-# 		self.assertEqual(type(tweet_posted_times[2]),type(("hello",)))
-# 	def test2(self):
-# 		self.assertEqual(type(more_than_2_rts),type([]))
-# 		self.assertEqual(type(more_than_2_rts[0]),type(("hello",)))
-# 	# def test3(self):
-# 	# 	self.assertEqual(set([x[3][:2] for x in more_than_2_rts]),{"RT"})
-# 	def test4(self):
-# 		self.assertTrue("+0000" in tweet_posted_times[0][0])
-# 	def test5(self):
-# 		self.assertEqual(type(first_rt),type(""))
-# 	def test6(self):
-# 		self.assertEqual(first_rt[:2],"RT")
-# 	def test7(self):
-# 		self.assertTrue(set([x[-1] > 2 for x in more_than_2_rts]) in [{},{True}])
+class PartTwo(unittest.TestCase):
+	def test1(self):
+		self.assertEqual(type(tweet_posted_times),type([]))
+		self.assertEqual(type(tweet_posted_times[2]),type(("hello",)))
+	def test2(self):
+		self.assertEqual(type(more_than_2_rts),type([]))
+		self.assertEqual(type(more_than_2_rts[0]),type(("hello",)))
+	# def test3(self):
+	# 	self.assertEqual(set([x[3][:2] for x in more_than_2_rts]),{"RT"})
+	def test4(self):
+		self.assertTrue("+0000" in tweet_posted_times[0][0])
+	def test5(self):
+		self.assertEqual(type(first_rt),type(""))
+	def test6(self):
+		self.assertEqual(first_rt[:2],"RT")
+	def test7(self):
+		self.assertTrue(set([x[-1] > 2 for x in more_than_2_rts]) in [{},{True}])
 
 class PartThree(unittest.TestCase):
 	def test1(self):
